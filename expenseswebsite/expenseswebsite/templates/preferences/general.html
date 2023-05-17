@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-3">
+        {% include 'partials/_messages.html' %}
+        <h5>Preferred Currency</h5>
+
+        <form action="{% url 'general' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <select name="currency" class="form-select w-25" id="inputGroupSelect">
+                
+                {% if user_preferences %}
+                    <option name="currency" value={{user_preferences.currency}} selected>{{user_preferences.currency}}</option>
+                {% endif %}
+
+                {% for currency in currencies %}
+                    <option name="currency" value="{{currency.name}} - {{currency.value}}"> {{currency.name}} - {{currency.value}} </option>
+                {% endfor %}
+                
+                </select>
+                <input class="btn btn-outline-secondary mx-2" type="submit" value="Save"/>
+            </div>
+        </form>
+
+    </div>
+
+    <hr/>
+    
+    <div class="container">
+        <h5>Manage Expense Categories</h5>
+        <form action="{% url 'delete-category' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <select name="del-category" class="form-select w-25" id="inputGroupSelect">
+                    <option hidden value="">Choose an expense category to edit/delete</option>
+                    {% for category in categories %}
+                        <option value="{{ category.name }}">{{ category.name }}</option>
+                    {% empty %}
+                        <option disabled>----------</option>
+                    {% endfor %}
+
+                </select>
+                <input type="button" disabled value="Edit" class="btn btn-outline-secondary mx-2" id="edit-category">
+                <input type="button" value="Save" class="btn btn-outline-secondary mx-2" id="save-category">
+                <input type="submit" disabled class="btn btn-outline-secondary" id="del-cat-confirm" value="Delete">  
+            </div>      
+        </form>
+    </div>
+
+    <hr/>
+
+    <div class="container">
+        <h5>Manage Income Sources</h5>
+        <form action="{% url 'delete-source' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <select name="del-source" class="form-select w-25" id="inputGroupSelect">
+                    <option hidden value="">Choose an income source to edit/delete</option>
+                    {% for source in sources %}
+                        <option value="{{ source.name }}">{{ source.name }}</option>
+                    {% empty %}
+                        <option disabled>----------</option>
+                    {% endfor %}
+                </select>
+                <input type="button" disabled value="Edit" class="btn btn-outline-secondary mx-2" id="edit-source">
+                <input type="button" value="Save" class="btn btn-outline-secondary mx-2" id="save-source">
+                <input type="submit" disabled class="btn btn-outline-secondary" id="del-src-confirm" name="delete" value="Delete">  
+            </div>      
+        </form>
+    </div>
+    
+    <hr>
+
+    <div class="container">
+        <h5>Upload CSV File</h5>
+        <form enctype="multipart/form-data" action="{% url 'upload' %}" method="post">
+            {% csrf_token %}
+            <input type="file" id="myFile" name="filename">
+            <input class="btn btn-outline-secondary mx-2" id="choose-file" type="submit" name="upload" value="Upload New File">
+            <input class="btn btn-outline-secondary" id="continue" type="button" name="continue" value="Continue">
+        </form>
+    </div>
+
+    <script src="{% static 'js/modifyCategorySource.js' %}"></script>
+    <script src="{% static 'js/uploadFile.js' %}"></script>
+    
+{% endblock %}

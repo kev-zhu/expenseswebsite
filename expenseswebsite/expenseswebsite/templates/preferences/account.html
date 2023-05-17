@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block scriptlinks %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+    {% include 'partials/_messages.html' %}
+    <div id="accordion">
+        <div class="card">
+            <button class="btn card-header heading text-left" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Account Information
+            </button>
+    
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body account-info">
+                    <div class="form-inline">Username:&nbsp;
+                        <span id="username">{{ user.username }}</span>
+                    </div>
+                    <div class="form-inline">Name:&nbsp;
+                        <span id="name">{% firstof user.first_name "No name on record" %}</span>
+                    </div>
+                    <div>Email: {% firstof user.email "n/a"%}</div>
+                    <br>
+                    <div>Active since: {{ user.date_joined }}</div>
+                    <div>Number of expense entries: {{ expensesCount }}</div>
+                    <div>Number of income entries: {{ incomeCount }}</div>
+                    <div>
+                        "Net worth": 
+                        {% if networth > 0 %}
+                            +{{ networth|floatformat:2 }}
+                        {% else %}
+                            {{ networth|floatformat:2 }}
+                        {% endif %}
+                    </div>
+                    <div>
+                        <button class="float-right mb-3" id="edit-account-info">Change Username/Edit Name</button>
+                    </div>
+                    <div>
+                        <button class="float-right mb-3" id="save-account-info">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <button class="btn card-header heading text-left" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                Change Password
+            </button>
+    
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5>Change Password</h5>
+                    </div>
+
+                    <div>
+                        <form action="{% url 'change-password' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="password" name="currPass" placeholder="Current Password" class="form-control form-control-sm passwordField">
+                                <small class="float-right py-3 showPasswordToggle">SHOW</small>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="password" placeholder="New Password" class="form-control form-control-sm passwordField">
+                                <small class="float-right py-3 showPasswordToggle">SHOW</small>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="password2" placeholder="Confirm Password" class="form-control form-control-sm passwordField">
+                                <small class="float-right py-3 showPasswordToggle">SHOW</small>
+                            </div>
+
+                            <input class="btn col-12 btn-primary submit-btn" type="submit" value="Change Password">
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <button class="btn card-header heading text-left" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                Delete/Deactivate Account
+            </button>
+    
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                    <div>
+                        <a href="{% url 'deactivate-account' %}" class="btn btn-secondary" id="confirm-deactivate">Deactivate Account</a>
+                        <p class="mt-2">When deactivated, you will not be able to log back into your account. A link will be sent to you if you choose to reactive your account at a later time. No information will be lost. The account will be inaccessble until you choose to reactivate your account by clicking on the link sent to you. <strong>Please do not lose the link!</strong></p>
+                    </div>
+
+                    <div>
+                        <a href="{% url 'delete-account' %}" class="btn btn-danger" id="confirm-delete">Delete Account</a>
+                        <p class="mt-2">When deleted, <strong>ALL</strong> of your information will be permanently deleted from this expense app. This includes, your expenses, income, and personal information like your username, email, and password. If you choose to use this app again in the future, please sign up for a new account.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/showPass.js' %}"></script>
+    <script src="{% static 'js/accountSettings.js' %}"></script>
+
+
+{% endblock %}

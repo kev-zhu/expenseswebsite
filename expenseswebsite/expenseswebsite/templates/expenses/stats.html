@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'overview' %}">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'expenses'%}">Expenses</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Expense Summary</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="col-md-3">
+                <a href="{% url 'overview' %}" class="btn btn-primary">Home</a>
+            </div>
+        </div>
+    </div>  
+
+
+    <div class="container">
+        {% include 'partials/_messages.html'%}
+
+    </div>
+    <div>
+        <canvas id="myChart" height="600" width="600"></canvas>
+    </div>
+        
+    <script src="{% static 'js/expenseStats.js' %}"></script>
+
+{% endblock %}
+

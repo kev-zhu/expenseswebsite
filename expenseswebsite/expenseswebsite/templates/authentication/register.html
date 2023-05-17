@@ -1,0 +1,52 @@
+{% extends 'base_auth.html'%}
+
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h4>Register for a free account</h4>
+                    </div>
+
+                    <form action="{% url 'register' %}" method="post">
+                        {% csrf_token %}
+                        {% include 'partials/_messages.html'%}
+                        <div class="form-group">
+                            <input type="text" name="username" placeholder="Username" id="usernameField" value="{{fieldValues.username}}" class="form-control form-control-sm">
+                        </div>
+                        <div class="invalid-feedback" style="display:none"></div>
+
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Email" id="emailField" value="{{fieldValues.email}}" class="form-control form-control-sm">
+                        </div>
+                        <div class="email-feedback invalid-feedback" style="display:none"></div>
+
+                        <div class="form-group">
+                            <input type="password" name="password" placeholder="Password" class="form-control form-control-sm passwordField">
+                            <small class="float-right py-3 showPasswordToggle">SHOW</small>
+                        </div>
+
+                        <input type="submit" value="Register" class="btn col-12 btn-primary submit-btn"/>
+                    </form>
+                    
+                    <div class="container">
+                        <span class="text-lead lead"> Already have an account? <a href="{% url 'login' %}">Login Here</a></span><br>
+                        <span class="text-lead lead"> Forgot password? <a href="{% url 'request-password' %}">Reset Password</a></span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+    <script src="{% static 'js/register.js' %}"></script>
+    <script src="{% static 'js/showPass.js' %}"></script>
+
+
+{% endblock %}
