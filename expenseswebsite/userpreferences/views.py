@@ -467,4 +467,4 @@ def upload_changes(request):
             messages.success(request,'All uploaded data has been added.')
             return redirect('overview')
 
-    return redirect('upload')      
+    return redirect('upload')
