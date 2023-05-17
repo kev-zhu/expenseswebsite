@@ -5,7 +5,7 @@ uploadButton.onclick = (event) => {
     event.preventDefault()
     //fetch something that checks for file existance
     //then if exist ==> pop up warning 
-    fetch('/settings/user-has-file')
+    fetch('/upload/user-has-file')
     .then(res => res.json())
     .then(file_exists => {
         //prevention of reload with preventDefault --> resolve with JS form submit()
@@ -24,13 +24,13 @@ uploadButton.onclick = (event) => {
 continueButton.addEventListener('click', () => {
     pathArr = window.location.pathname.split('/')
     pathArr.pop()
-    pathArr.push('upload')
+    pathArr.push('upload-changes')
     uploadPath = pathArr.join('/')
     window.location.href = window.location.origin + uploadPath
 })
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('/settings/user-has-file')
+    fetch('/upload/user-has-file')
     .then(res => res.json())
     .then(file_exists => {
         if (!file_exists.result) {

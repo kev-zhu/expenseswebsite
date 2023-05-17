@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'userpreferences',
     'userincome',
     'overview',
-    'authentication'
+    'authentication',
+    'upload'
 ]
 
 MIDDLEWARE = [
