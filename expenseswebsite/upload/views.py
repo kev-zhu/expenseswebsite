@@ -12,6 +12,7 @@ import json
 from django.contrib import messages
 import csv
 
+
 # Create your views here.
 
 @login_required
@@ -27,14 +28,26 @@ def index(request):
             messages.error(request, 'No file uploaded. Please upload a new file.')
             return redirect('upload')
 
-        data = str(file.read())
-        #****** later change this so the user can download a formatted spread sheet so file upload can be more "flexible"/prevent errors for user if the follow directions
-        data = organize_data(data[2:].replace('\\r\\n',',').split(','))
-        uniq_categories = uniq_dataset(data)
+        if file.content_type != 'text/csv':
+            messages.error(request, 'This is not a .csv file. Please upload a correctly formatted .csv file.')
+            return redirect('upload')
+
+
+        file_data = str(file.read())        
+        data = (','.join(file_data.split('\\r\\n')[2:])).split(',')
+
+        #note this is added bc without it, a downloaded csv thats been uploaded will have "'" as the last and only value in array -- when should be empty after removing top two "rows"
+        if data[len(data) - 1] != "":
+            data.pop()
+
+        print(data)
+
+        org_data = organize_data(data)
+        uniq_categories = uniq_dataset(org_data)
 
         retrieved_data = {
             "categories": uniq_categories,
-            "expense": data
+            "expense": org_data
         }
 
         # save data as json file to be opened/deleted later again
@@ -55,25 +68,28 @@ def index(request):
 def organize_data(data):
     organized = []
     i = 0
-    while i < len(data):
-    # for data in all_data:
-        date_cat = data[i]
-        if date_cat:
-            date = date_cat[:-1].split('/')
-            month = int(date[0])
-            day = int(date[1])
-            year = 2000 + int(date[2])
-            item = {
-                "initial": date_cat[-1:],
-                "date": datetime.date(year=year, month=month, day=day),
-                "type": "",
-                "category": date_cat[-1:],
-                "amount": data[i + 1],
-                "desc": data[i + 2]
-            }
-            organized.append(item)
-        i +=3 
 
+    while i < len(data):
+        if data[i]:
+            d = data[i].split('/')
+            month = int(d[0])
+            day = int(d[1])
+            year = 2000 + int(d[2])
+            date = datetime.date(year=year, month=month, day=day)
+            #prevent upload any data from a date later than today (the future)
+            if date > datetime.date.today():
+                continue
+            obj = {
+                "initial": data[i + 1],
+                "date": date,
+                "type": "",
+                "category": data[i + 1],
+                "amount": str(round(float(data[i + 2]), 2)),
+                "desc": data[i + 3]
+            }
+            organized.append(obj)
+        i += 4
+        
     organized.sort(key=lambda x: x['date'])
 
     def convertDateToStr(obj):
@@ -176,7 +192,7 @@ def upload_changes(request):
                 if date > datetime.date.today():
                     continue
 
-                amount = float(obj['amount'][1:])
+                amount = float(obj['amount'])
                 if obj['type'] == 'Expense':
                     if not Category.objects.filter(owner=request.user, name=obj['category']):
                         Category.objects.create(owner=request.user, name=obj['category'].capitalize())
@@ -207,9 +223,11 @@ def download_template(request):
     response['Content-Disposition'] = 'attachment; filename=UploadTemplate.csv'
 
     writer = csv.writer(response)
-    instructions = ['Instructions: Please do not change the formatting. Upload any data into the respective columns. Avoid using any "," (in amount or description) as it would disrupt the .csv file. Save file as a .csv file before uploading. You can upload file to Google Sheets or Excel to add new data easily. You can add more rows under heading if needed.']
+    instruction = "Instructions: Please do not change the formatting. Upload any data into the respective columns. Avoid using any commas (in amount or description) as it would disrupt the .csv file. Save file as a .csv file before uploading. You can upload file to Google Sheets or Excel to add new data easily. You can add more rows under heading if needed."
+    instructions = [instruction, '', '', '']
+
     writer.writerow(instructions)
-    writer.writerow(['Date(mm/dd/yyyy)', 'Category', 'Amount', 'Description'])
+    writer.writerow(['Date(mm/dd/yy)', 'Category', 'Amount', 'Description'])
 
     messages.success(request, 'Template Downloaded')
     return response 

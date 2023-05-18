@@ -95,7 +95,7 @@
                 {% for input in data.expense %}
                     {% if input.type == 'Income' %}
                         <tr style="background-color: #DFF4D9">
-                            <td>+{{ input.amount }}</td>
+                            <td>+{{ input.amount | floatformat:2 }}</td>
                             <td>{{ input.type }}</td>
                             <td>{{ input.category }}</td>
                             <td>{{ input.desc }}</td>
@@ -103,7 +103,7 @@
                         </tr>
                     {% elif input.type == 'Expense'%}
                         <tr style="background-color: #F4D9D9">
-                            <td>-{{ input.amount }}</td>
+                            <td>-{{ input.amount | floatformat:2 }}</td>
                             <td>{{ input.type }}</td>
                             <td>{{ input.category }}</td>
                             <td>{{ input.desc }}</td>
@@ -111,7 +111,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td>-{{ input.amount }}</td>
+                            <td>{{ input.amount | floatformat:2 }}</td>
                             <td>{{ input.type }}</td>
                             <td>{{ input.category }}</td>
                             <td>{{ input.desc }}</td>
