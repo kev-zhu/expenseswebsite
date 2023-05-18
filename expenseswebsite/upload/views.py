@@ -40,9 +40,12 @@ def index(request):
         if data[len(data) - 1] != "":
             data.pop()
 
-        print(data)
+        try:
+            org_data = organize_data(data)
+        except:
+            messages.error(request, 'There is a problem with the formatting of the uploaded file. Please follow the instructions to ensure that it is correct.')
+            return redirect('upload')
 
-        org_data = organize_data(data)
         uniq_categories = uniq_dataset(org_data)
 
         retrieved_data = {
