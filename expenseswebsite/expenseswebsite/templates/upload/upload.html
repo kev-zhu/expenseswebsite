@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        {% include 'partials/_messages.html' %}
+        <a href="{% url 'download-template' %}" class="btn btn-secondary export">Download Upload Template File</a>
+    </div>
+
+    <hr>
+
+    <div class="container">
+        <h5>Upload CSV File</h5>
+        <form enctype="multipart/form-data" action="{% url 'upload' %}" method="post">
+            {% csrf_token %}
+            <input type="file" id="myFile" name="filename">
+            <input class="btn btn-outline-secondary mx-2" id="choose-file" type="submit" name="upload" value="Upload New File">
+            <input class="btn btn-outline-secondary" id="continue" type="button" name="continue" value="Continue">
+        </form>
+    </div>
+
+    <script src="{% static 'js/uploadFile.js' %}"></script>
+
+{% endblock %}
