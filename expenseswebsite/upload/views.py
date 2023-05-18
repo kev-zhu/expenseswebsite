@@ -230,7 +230,7 @@ def download_template(request):
     instructions = [instruction, '', '', '']
 
     writer.writerow(instructions)
-    writer.writerow(['Date(mm/dd/yy)', 'Category', 'Amount', 'Description'])
+    writer.writerow(['Date (mm/dd/yy)', 'Category', 'Amount (value only)', 'Description'])
 
     messages.success(request, 'Template Downloaded')
     return response 
