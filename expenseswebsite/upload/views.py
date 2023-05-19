@@ -232,5 +232,4 @@ def download_template(request):
     writer.writerow(instructions)
     writer.writerow(['Date (mm/dd/yy)', 'Category', 'Amount (value only)', 'Description'])
 
-    messages.success(request, 'Template Downloaded')
     return response 

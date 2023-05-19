@@ -44,7 +44,7 @@ const renderCharts = (total_prior_year, data, labels) => {
                     display: false
                 }
             },
-            responsive: false,
+            responsive: true,
             scales: {
                 y: {
                     beginAtZero: true
@@ -71,7 +71,7 @@ const renderCharts = (total_prior_year, data, labels) => {
                     display: false
                 }
             },
-            responsive: false,
+            responsive: true,
             scales: {
                 y: {
                     beginAtZero: true

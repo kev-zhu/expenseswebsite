@@ -25,3 +25,16 @@
 .export {
   margin-right: 5%
 }
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  filter:invert(100%);
+}
+
+.carousel-indicators > li {
+  border: solid 1px lightgrey;
+  background-color: black;
+}
+
+.carousel-item {
+  height: 80%
+}
