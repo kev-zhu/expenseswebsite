@@ -45,6 +45,7 @@ const renderCharts = (total_prior_year, data, labels) => {
                 }
             },
             responsive: true,
+            maintainAspectRatio: true,
             scales: {
                 y: {
                     beginAtZero: true
@@ -72,6 +73,7 @@ const renderCharts = (total_prior_year, data, labels) => {
                 }
             },
             responsive: true,
+            maintainAspectRatio: true,
             scales: {
                 y: {
                     beginAtZero: true
