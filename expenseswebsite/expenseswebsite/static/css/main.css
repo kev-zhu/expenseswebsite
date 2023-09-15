@@ -38,3 +38,7 @@
 .carousel-item {
   height: 80%
 }
+
+#carouselExampleIndicators {
+  display: flex;
+}

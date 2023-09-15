@@ -33,11 +33,7 @@
 
 
 <div id="carouselExampleIndicators" class="carousel slide container-fluid px-0" data-interval="false">
-    <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
+
     <div class="carousel-inner container">
         <div class="carousel-item active">
             <div>
@@ -121,8 +117,8 @@
                         {% if page_obj.has_next %}
                         <li class="page-item"> <a class="page-link"
                                 href="?page={{ page_obj.next_page_number }}">Next</a></li>
-                        <li class="page-item"> <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{
-                                page_obj.paginator.num_pages }} &raquo;</a></li>
+                        <li class="page-item"> <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+                            {{ page_obj.paginator.num_pages }} &raquo;</a></li>
                         {% endif %}
                     </ul>
                 </div>
