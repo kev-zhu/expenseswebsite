@@ -9,6 +9,7 @@ textInput.type = 'text'
 textInput.className = 'form-control form-control-sm'
 textInput.name = 'category'
 textInput.placeholder = 'Input a New Category'
+textInput.autocomplete = "off"
 
 selectInput.addEventListener("change", () => {
     if (selectInput.value === 'Add a new option') {
